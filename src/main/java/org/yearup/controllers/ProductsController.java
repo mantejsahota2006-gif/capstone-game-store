@@ -12,11 +12,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("products")
+@RequestMapping("/products")
 @CrossOrigin
 public class ProductsController
 {
-    private ProductDao productDao;
+    private final ProductDao productDao;
 
     @Autowired
     public ProductsController(ProductDao productDao)
@@ -24,86 +24,78 @@ public class ProductsController
         this.productDao = productDao;
     }
 
-    @GetMapping("")
+    @GetMapping
     @PreAuthorize("permitAll()")
-    public List<Product> search(@RequestParam(name="cat", required = false) Integer categoryId,
-                                @RequestParam(name="minPrice", required = false) BigDecimal minPrice,
-                                @RequestParam(name="maxPrice", required = false) BigDecimal maxPrice,
-                                @RequestParam(name="subCategory", required = false) String subCategory
-                                )
+    public List<Product> search(
+            @RequestParam(required = false) Integer cat,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) String subCategory)
     {
-        try
-        {
-            return productDao.search(categoryId, minPrice, maxPrice, subCategory);
+        try {
+            return productDao.search(cat, minPrice, maxPrice, subCategory);
         }
-        catch(Exception ex)
-        {
+        catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("permitAll()")
-    public Product getById(@PathVariable int id )
+    public Product getById(@PathVariable int id)
     {
-        try
-        {
-            var product = productDao.getById(id);
-
-            if(product == null)
+        try {
+            Product product = productDao.getById(id);
+            if (product == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
             return product;
         }
-        catch(Exception ex)
-        {
+        catch (ResponseStatusException ex) {
+            throw ex;
+        }
+        catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
-    @PostMapping()
+    @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Product addProduct(@RequestBody Product product)
     {
-        try
-        {
+        try {
             return productDao.create(product);
         }
-        catch(Exception ex)
-        {
+        catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateProduct(@PathVariable int id, @RequestBody Product product)
     {
-        try
-        {
+        try {
             productDao.update(id, product);
         }
-        catch(Exception ex)
-        {
+        catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteProduct(@PathVariable int id)
     {
-        try
-        {
-            var product = productDao.getById(id);
-
-            if(product == null)
+        try {
+            Product product = productDao.getById(id);
+            if (product == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
             productDao.delete(id);
         }
-        catch(Exception ex)
-        {
+        catch (ResponseStatusException ex) {
+            throw ex;
+        }
+        catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
