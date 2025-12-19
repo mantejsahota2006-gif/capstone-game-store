@@ -24,16 +24,15 @@ public class ProductsController
         this.productDao = productDao;
     }
 
-    @GetMapping
+    @GetMapping("")
     @PreAuthorize("permitAll()")
-    public List<Product> search(
-            @RequestParam(required = false) Integer cat,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice,
-            @RequestParam(required = false) String subCategory)
+    public List<Product> search(@RequestParam(name = "cat", required = false) Integer categoryId,
+                                @RequestParam(name = "minPrice", required = false) BigDecimal minPrice,
+                                @RequestParam(name = "maxPrice", required = false) BigDecimal maxPrice,
+                                @RequestParam(name = "subCategory", required = false) String subCategory)
     {
         try {
-            return productDao.search(cat, minPrice, maxPrice, subCategory);
+            return productDao.search(categoryId, minPrice, maxPrice, subCategory);
         }
         catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
