@@ -8,8 +8,11 @@ Briefly describe what this Java console application does. Mention its purpose an
 
 List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
 
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+- As a shopper, I want to search for video game products by category, price range, and sub-category, so that I can easily find products that match my preferences.
+- As a shopper, I want to view detailed information for a single product, so that I can decide whether I want to purchase it.
+- As an administrator, I want to add new video game products to the store, so that the catalog stays up to date.
+- As an administrator, I want to update existing product information, so that prices, inventory, and descriptions remain accurate.
+- As an administrator, I want to remove products from the store, so that discontinued items are no longer available.
 
 ## Setup
 
@@ -32,8 +35,10 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Technologies Used
 
-- Java: Mention the version you are using.
-- Any additional libraries or frameworks used in the project.
+- Java
+- Intellij
+- SQL Workbench
+- 
 
 ## Demo
 
