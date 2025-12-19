@@ -12,104 +12,116 @@ import org.yearup.models.Product;
 
 import java.util.List;
 
+
 @RestController
+@RequestMapping("categories")
 @CrossOrigin
-@RequestMapping("/categories")
-public class CategoriesController
-{
+public class CategoriesController {
     private CategoryDao categoryDao;
     private ProductDao productDao;
 
+
     @Autowired
-    public CategoriesController(CategoryDao categoryDao, ProductDao productDao)
-    {
-        this.categoryDao = categoryDao;
+    public CategoriesController(CategoryDao categorydao, ProductDao productDao) {
+        this.categoryDao = categorydao;
         this.productDao = productDao;
     }
 
-
+    // add the appropriate annotation for a get action
     @GetMapping
     @PreAuthorize("permitAll()")
-    public List<Category> getAll()
-    {
-        return categoryDao.getAllCategories();
+    public List<Category> getAll() {
+        try {
+            return categoryDao.getAllCategories();
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+
+        }
     }
 
-
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     @PreAuthorize("permitAll()")
-    public Category getById(@PathVariable int id)
-    {
-        Category category = categoryDao.getById(id);
+    public Category getById(@PathVariable int id) {
+
+        var category = categoryDao.getById(id);
 
         if (category == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
         }
-
         return category;
+
     }
 
 
     @GetMapping("{categoryId}/products")
     @PreAuthorize("permitAll()")
-    public List<Product> getProductsById(@PathVariable int categoryId)
-    {
+    public List<Product> getProductsById(@PathVariable int categoryId) {
         try {
-            Category category = categoryDao.getById(categoryId);
-
-            if (category == null) {
+            if (categoryDao.getById(categoryId) == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
             }
 
-            return productDao.listByCategoryId(categoryId);
+            return productDao.listByCategoryId(categoryId); // Assuming ProductDao has this method
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
+
     }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Category addCategory(@RequestBody Category category)
-    {
+    public Category addCategory(@RequestBody Category category) {
         try {
+            // insert the category
             return categoryDao.create(category);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
-
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateCategory(@PathVariable int id, @RequestBody Category category) {
-        try {
-            Category existingCategory = categoryDao.getById(id);
-            if (existingCategory == null) {
+        try
+        {
+
+            if (categoryDao.getById(id) == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
             }
 
             categoryDao.update(id, category);
-        } catch (Exception ex) {
+        }
+        catch(Exception ex)
+
+        {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
+
 
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteCategory(@PathVariable int id) {
-        try {
-            Category category = categoryDao.getById(id);
-            if (category == null) {
+    public void deleteCategory(@PathVariable int id)
+    {
+        try
+        {
+            // Check if the category exists before deleting
+            var category = categoryDao.getById(id);
+
+            if(category == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
-            }
+
 
             categoryDao.delete(id);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
+
 }
