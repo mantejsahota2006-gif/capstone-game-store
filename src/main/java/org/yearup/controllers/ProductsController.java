@@ -43,16 +43,17 @@ public class ProductsController
     @PreAuthorize("permitAll()")
     public Product getById(@PathVariable int id)
     {
-        try {
-            Product product = productDao.getById(id);
-            if (product == null)
+        try
+        {
+            var product = productDao.getById(id);
+
+            if(product == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
             return product;
         }
-        catch (ResponseStatusException ex) {
-            throw ex;
-        }
-        catch (Exception ex) {
+        catch(Exception ex)
+        {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
