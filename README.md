@@ -2,7 +2,7 @@
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+I built a Spring Boot backend for a video game e-commerce store using a MySQL database, where I implemented and debugged REST API endpoints for categories and products. I fixed critical bugs in product search filtering and product updates to ensure correct results, I attempted to implement a shopping cart but I was unable to do so.
 
 ## User Stories
 
@@ -38,20 +38,23 @@ Follow these steps to get your application running within IntelliJ IDEA:
 - Java
 - Intellij
 - SQL Workbench
-- 
+- Insomnia
 
 ## Demo
 
 Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
 
-![Application Screenshot](path/to/your/screenshot.png)
+<img width="1304" height="912" alt="image" src="https://github.com/user-attachments/assets/00d9d612-002e-41c4-a801-5c6ed051edf5" />
+
 
 ## Future Work
 
 Outline potential future enhancements or functionalities you might consider adding:
 
-- Additional feature to be developed.
-- Improvement of current functionalities.
+- Better frontend design.
+- Shopping Cart.
+- Different user profiles.
+- Admin controls.
 
 ## Resources
 
@@ -62,12 +65,11 @@ List resources such as tutorials, articles, or documentation that helped you dur
 
 ## Team Members
 
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
+- Mantej Sahota
 
 ## Thanks
 
 Express gratitude towards those who provided help, guidance, or resources:
 
-- Thank you to [Mentor's Name] for continuous support and guidance.
-- A special thanks to all teammates for their dedication and teamwork.
+- Thank you Raymond.
+- Thank you to all of my peers that helped me.
